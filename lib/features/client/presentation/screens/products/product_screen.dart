@@ -156,21 +156,19 @@ class ProductDetailScreen extends ConsumerWidget {
                 IconButton(
                   icon: const Icon(Icons.eco_outlined),
                   onPressed: () {
-                    // Implementa la lógica de feedback
+                    // TODO: Implementa la lógica de feedback
                   },
                 ),
                 const SizedBox(width: 8.0),
                 Expanded(
                   child: Consumer(
                     builder: (context, ref, child) {
-                      // builder: (context, watch, child) {
                       final cartItems = ref.watch(cartNotifierProvider);
                       final isProductInCart =
                           cartItems.any((item) => item.productId == productId);
-
                       return ElevatedButton(
                         onPressed: isProductInCart
-                            ? null // Desactiva el botón si el producto ya está en el carrito
+                            ? null
                             : () {
                                 ref
                                     .read(cartNotifierProvider.notifier)
@@ -181,7 +179,6 @@ class ProductDetailScreen extends ConsumerWidget {
                                       product.price,
                                     );
                               },
-                        style: const ButtonStyle(),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
