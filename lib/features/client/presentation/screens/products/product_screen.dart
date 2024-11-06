@@ -34,6 +34,7 @@ class ProductDetailScreen extends ConsumerWidget {
           fontSize: 18,
           fontWeight: FontWeight.bold,
         );
+    final colors = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
         leading: const IconButtonArrowBack(),
@@ -160,23 +161,41 @@ class ProductDetailScreen extends ConsumerWidget {
                 ),
                 const SizedBox(width: 8.0),
                 Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      ref.read(cartNotifierProvider.notifier).addProductToCart(
-                            productId,
-                            product.nameProduct,
-                            1,
-                            product.price,
-                          );
+                  child: Consumer(
+                    builder: (context, ref, child) {
+                      // builder: (context, watch, child) {
+                      final cartItems = ref.watch(cartNotifierProvider);
+                      final isProductInCart =
+                          cartItems.any((item) => item.productId == productId);
+
+                      return ElevatedButton(
+                        onPressed: isProductInCart
+                            ? null // Desactiva el botón si el producto ya está en el carrito
+                            : () {
+                                ref
+                                    .read(cartNotifierProvider.notifier)
+                                    .addProductToCart(
+                                      productId,
+                                      product.nameProduct,
+                                      1,
+                                      product.price,
+                                    );
+                              },
+                        style: const ButtonStyle(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(isProductInCart
+                                ? Icons.check
+                                : Icons.shopping_cart),
+                            const SizedBox(width: 8.0),
+                            Text(isProductInCart
+                                ? 'PRODUCTO AGREGADO'
+                                : 'AGREGAR AL CARRITO'),
+                          ],
+                        ),
+                      );
                     },
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.shopping_cart),
-                        SizedBox(width: 8.0),
-                        Text('AGREGAR AL CARRITO'),
-                      ],
-                    ),
                   ),
                 ),
               ],
