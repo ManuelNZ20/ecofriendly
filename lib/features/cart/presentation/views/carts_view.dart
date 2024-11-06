@@ -15,6 +15,22 @@ class CartView extends ConsumerWidget {
     final title = Theme.of(context).textTheme.titleLarge!.copyWith(
           color: colors.onPrimary,
         );
+    ref.listen<AsyncValue<bool>>(orderConfirmProvider, (previous, next) {
+      next.when(
+        data: (data) {
+          if (data) {
+            showSnackbar(context, 'Orden Confirmada');
+          }
+          showSnackbar(context, 'Procesando...');
+        },
+        error: (error, stackTrace) {
+          showSnackbar(context, 'Error de Orden: $error');
+        },
+        loading: () {
+          showSnackbar(context, 'Procesando...');
+        },
+      );
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text('Carro de Compras'),
@@ -65,19 +81,11 @@ class CartView extends ConsumerWidget {
                       style: title,
                     ),
                     FilledButton(
-                      onPressed: () async {
-                        ref.read(orderConfirmProvider).when(
-                          data: (data) {
-                            showSnackbar(context, 'Orden Confirmada');
-                          },
-                          error: (error, stackTrace) {
-                            showSnackbar(context, 'Error de Orden $error');
-                          },
-                          loading: () {
-                            showSnackbar(context, 'Procesando...');
-                          },
-                        );
-                      },
+                      onPressed: cartItems.isNotEmpty
+                          ? () =>
+                              // Llama al proveedor para procesar la orden
+                              ref.refresh(orderConfirmProvider)
+                          : () => showSnackbar(context, 'Lista Vacía'),
                       child: const Text('Confirmar Orden'),
                     ),
                   ],

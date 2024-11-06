@@ -13,12 +13,14 @@ final ordersNotifierProvider =
   );
 });
 
-final orderConfirmProvider = FutureProvider((ref) async {
+// Definición de `orderConfirmProvider`
+final orderConfirmProvider = FutureProvider.autoDispose<bool>((ref) async {
   final cartsItems = ref.read(cartNotifierProvider);
   final totalPrice = cartsItems.fold<double>(
     0.0,
     (sum, element) => sum + element.price * element.quantity,
   );
+
   final ordersItems = cartsItems
       .map(
         (e) => OrderItem(
@@ -31,6 +33,7 @@ final orderConfirmProvider = FutureProvider((ref) async {
         ),
       )
       .toList();
+
   await ref.read(ordersNotifierProvider.notifier).createOrder(
         ordersItems,
         totalPrice,
