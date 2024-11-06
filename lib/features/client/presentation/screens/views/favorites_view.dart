@@ -38,7 +38,8 @@ class FavoritesViewState extends ConsumerState<FavoritesView> {
       appBar: AppBar(
         title: const Text('Favoritos'),
       ),
-      body: GridViewProductsClientAllFavorite(
+      body: GridViewProductsFavorite(
+        loadNextPage: loadNextPage,
         products: favoritesProducts,
       ),
     );

@@ -22,6 +22,7 @@ class StorageProductNotifier extends StateNotifier<Map<int, ProductClient>> {
   Future<List<ProductClient>> loadNextPage() async {
     final products = await localStorageRepository.loadProducts(
       offset: page * 10,
+      limit: 20,
     );
     ++page;
     final tempProductMap = <int, ProductClient>{};
@@ -33,5 +34,21 @@ class StorageProductNotifier extends StateNotifier<Map<int, ProductClient>> {
       ...tempProductMap,
     };
     return products;
+  }
+
+  Future<void> toggleFavorite(ProductClient product) async {
+    await localStorageRepository.toggleFavorite(product);
+    final bool isProductInFavorites = state[product.id] != null;
+    if (isProductInFavorites) {
+      state.remove(product.id);
+      state = {
+        ...state,
+      };
+    } else {
+      state = {
+        ...state,
+        product.id: product,
+      };
+    }
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/shared/shared.dart';
 import '../../riverpod/products_provider.dart';
+import '../../riverpod/storage/favorite_products.riverpod.dart';
 import '../../riverpod/storage/local_storage.riverpod.dart';
 
 class ProductDetailScreen extends ConsumerWidget {
@@ -198,10 +199,17 @@ class _SliderAppBar extends ConsumerWidget {
     final isFavoriteFuture = ref.watch(isFavoriteProvider(product.id));
     final colors = Theme.of(context).colorScheme;
     return IconButton(
-      onPressed: () {
-        print('F');
-        ref.watch(localStorageRepositoryProvider).toggleFavorite(product);
+      onPressed: () async {
+        // final localStorageRepository = ref.read(localStorageRepositoryProvider);
+        // Cambia el estado de favorito de forma asíncrona
+        // await localStorageRepository.toggleFavorite(product);
+        await ref
+            .read(productsFavoriteProvider.notifier)
+            .toggleFavorite(product);
+        // Invalida el `isFavoriteProvider` para que recargue el estado
         ref.invalidate(isFavoriteProvider(product.id));
+        // ref.watch(localStorageRepositoryProvider).toggleFavorite(product);
+        // ref.invalidate(isFavoriteProvider(product.id));
       },
       icon: isFavoriteFuture.when(
         loading: () => const CircularProgressIndicator(strokeWidth: 2),
