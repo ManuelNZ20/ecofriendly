@@ -1,0 +1,1 @@
+enum StateAccount { verify, notVerify }
