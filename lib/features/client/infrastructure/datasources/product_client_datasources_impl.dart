@@ -18,7 +18,6 @@ class ProductClientDatasourceImpl implements ProductClientDatasource {
     return products;
   }
 
-  // TODO: MEJORAR LAS PETICIONES CON IDPRODUCT
   @override
   Future<ProductClient> getProductById({int idProduct = 0}) async {
     try {
@@ -58,7 +57,6 @@ class ProductClientDatasourceImpl implements ProductClientDatasource {
         *,
         productdiscount(*)
         ''');
-      print(response);
       final products = _responseProduct(response);
       return products;
     } catch (e) {
