@@ -34,7 +34,7 @@ class IsarDatasource extends LocalStorageDatasource {
 
   @override
   Future<List<ProductClient>> loadProducts(
-      {int limit = 0, int offset = 0}) async {
+      {int limit = 10, int offset = 0}) async {
     final isar = await db;
     return isar.productClients.where().offset(offset).limit(limit).findAll();
   }
@@ -45,11 +45,11 @@ class IsarDatasource extends LocalStorageDatasource {
       final isar = await db;
       final favoriteProduct =
           await isar.productClients.filter().idEqualTo(product.id).findFirst();
-
       if (favoriteProduct != null) {
+        print('${favoriteProduct.id}');
         // borrar
         isar.writeTxnSync(
-            () => isar.productClients.deleteSync(product.isarId!));
+            () => isar.productClients.deleteSync(favoriteProduct.isarId!));
         return;
       }
       isar.writeTxnSync(() => isar.productClients.putSync(product));

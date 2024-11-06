@@ -13,7 +13,7 @@ class LocalStorageRepositoryImpl extends LocalStorageRepository {
 
   @override
   Future<List<ProductClient>> loadProducts(
-      {int limit = 0, int offset = 0}) async {
+      {int limit = 10, int offset = 0}) async {
     return await datasource.loadProducts(
       limit: limit,
       offset: offset,

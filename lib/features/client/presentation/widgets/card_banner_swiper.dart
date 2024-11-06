@@ -117,7 +117,7 @@ class _ImageGallery extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Image.network(
       width: size.width,
-      height: size.height * .3,
+      height: size.height,
       fit: BoxFit.cover,
       imgUrl == ''
           ? 'https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png'

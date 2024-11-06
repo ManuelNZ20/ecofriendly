@@ -1,3 +1,4 @@
+import 'package:ecofriendly_flutter_app/features/client/domain/entities/product_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -35,21 +36,7 @@ class ProductDetailScreen extends ConsumerWidget {
         leading: const IconButtonArrowBack(),
         title: const Text('Detalles del producto'),
         actions: [
-          IconButton(
-            icon: const Icon(
-              /*  ref.watch(productsProvider.select((state) => state.products
-                      .firstWhere((product) => product.id == productId)
-                      .isFavorite!))
-                  ?  */
-              /* Icons.favorite  : */ Icons.favorite_border,
-            ),
-            onPressed: () async {
-              // ref.read(productsProvider.notifier).toggleFavorite(productId);
-              await ref
-                  .watch(localStorageRepositoryProvider)
-                  .toggleFavorite(product);
-            },
-          ),
+          _SliderAppBar(product: product),
         ],
       ),
       body: Padding(
@@ -71,7 +58,13 @@ class ProductDetailScreen extends ConsumerWidget {
                 if (loadingProgress == null) {
                   return child;
                 } else {
-                  return const CircularProgressIndicator();
+                  return const SizedBox(
+                    width: 200,
+                    height: 200,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
                 }
               }),
             ),
@@ -183,6 +176,55 @@ class ProductDetailScreen extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+final isFavoriteProvider =
+    FutureProvider.family.autoDispose((ref, int productId) async {
+  final localStorageRepository = ref.watch(localStorageRepositoryProvider);
+  return await localStorageRepository.isProductFavorite(productId);
+});
+
+class _SliderAppBar extends ConsumerWidget {
+  const _SliderAppBar({
+    required this.product,
+  });
+
+  final ProductClient product;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // final isFavoriteFuture = ref.watch(isFavoriteProvider(product.id));
+    final colors = Theme.of(context).colorScheme;
+    return IconButton(
+      onPressed: () {
+        print('F');
+        ref.watch(localStorageRepositoryProvider).toggleFavorite(product);
+        ref.read(productsProvider.notifier).toggleFavorite(product.id);
+        // ref.invalidate(isFavoriteProvider(product.id));
+      },
+      icon: Icon(
+        ref.watch(productsProvider.select((state) => state.products
+                .firstWhere((product) => product.id == product.id)
+                .isFavorite!))
+            ? Icons.favorite
+            : Icons.favorite_border,
+        color: colors.primary,
+      ),
+      /* isFavoriteFuture.when(
+        loading: () => const CircularProgressIndicator(strokeWidth: 2),
+        data: (isFavorite) => isFavorite
+            ? Icon(
+                Icons.favorite_rounded,
+                color: colors.primary,
+              )
+            : Icon(
+                Icons.favorite_outline_rounded,
+                color: colors.primary,
+              ),
+        error: (_, __) => throw UnimplementedError(),
+      ), */
     );
   }
 }
