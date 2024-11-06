@@ -8,5 +8,6 @@ class CartItemsMapper {
         productId: cart.productId,
         price: cart.price,
         quantity: cart.quantity,
+        nameProduct: cart.nameProduct,
       );
 }

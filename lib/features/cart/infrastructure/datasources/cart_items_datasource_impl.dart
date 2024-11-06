@@ -10,6 +10,7 @@ class CartItemsDatasourceImpl extends CartItemsDatasource {
   @override
   Future<List<CartItems>> addProductToCart(
     int productId,
+    String nameProduct,
     String userId,
     int quantity,
     double price,
@@ -21,6 +22,7 @@ class CartItemsDatasourceImpl extends CartItemsDatasource {
           'user_id': userId,
           'quantity': quantity,
           'price': price,
+          'name_product': nameProduct,
         }
       ]).select();
       final listCarts = response.map((e) => _responseToEntityCart(e)).toList();
@@ -42,10 +44,8 @@ class CartItemsDatasourceImpl extends CartItemsDatasource {
   @override
   Future<List<CartItems>> getProductsToCart(String userId) async {
     try {
-      final response = await supabase.from('cart_items').select().eq(
-            'user_id',
-            userId,
-          );
+      final response =
+          await supabase.from('cart_items').select().eq('user_id', userId);
       final cartsItems = response.map((e) => _responseToEntityCart(e)).toList();
       return cartsItems;
     } catch (e) {
@@ -77,5 +77,43 @@ class CartItemsDatasourceImpl extends CartItemsDatasource {
     final model = CartItemsModel.fromJson(response);
     final cart = CartItemsMapper.toCartItemsEntity(model);
     return cart;
+  }
+
+  @override
+  Future<bool> clearCart(String userId) async {
+    try {
+      final response = await supabase
+          .from('cart_items')
+          .delete()
+          .eq('user_id', userId)
+          .select();
+      return response.isNotEmpty;
+    } catch (e) {
+      print('Error delete cart $e');
+      return false;
+    }
+  }
+
+  @override
+  Future<void> createdOrderFormCart(String userId) async {}
+
+  @override
+  Future<bool> removeProduct(
+    int productId,
+    String userId,
+  ) async {
+    try {
+      final response = await supabase
+          .from('cart_items')
+          .delete()
+          .eq('product_id', productId)
+          .eq('user_id', userId)
+          .select();
+      return response.isNotEmpty;
+    } catch (e) {
+      print('Error remove cart $e');
+      return false;
+    }
+    // final response = await supabase
   }
 }

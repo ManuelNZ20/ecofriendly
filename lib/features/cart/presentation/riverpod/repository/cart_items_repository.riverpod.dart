@@ -3,5 +3,7 @@ import '../../../domain/domain.dart';
 import '../../../infrastructure/infrastructure.dart';
 
 final cartItemsRepositoryProvider = Provider<CartItemsRepository>((ref) {
-  return CartItemsRepositoryImpl(CartItemsDatasourceImpl());
+  return CartItemsRepositoryImpl(
+    CartItemsDatasourceImpl(),
+  );
 });

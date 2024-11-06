@@ -93,6 +93,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           // PRODUCT
           GoRoute(
             path: 'product/:idProduct',
+            name: ProductDetailScreen.name,
             builder: (context, state) {
               final idProduct = state.pathParameters['idProduct'];
               return ProductDetailScreen(

@@ -9,12 +9,14 @@ class CartItemsRepositoryImpl extends CartItemsRepository {
   @override
   Future<List<CartItems>> addProductToCart(
     int productId,
+    String nameProduct,
     String userId,
     int quantity,
     double price,
   ) async {
     return await datasource.addProductToCart(
       productId,
+      nameProduct,
       userId,
       quantity,
       price,
@@ -41,6 +43,27 @@ class CartItemsRepositoryImpl extends CartItemsRepository {
       int quantity, int productId, String userId) async {
     return await datasource.updateQuantityProductToCart(
       quantity,
+      productId,
+      userId,
+    );
+  }
+
+  @override
+  Future<bool> clearCart(String userId) async {
+    return await datasource.clearCart(userId);
+  }
+
+  @override
+  Future<void> createdOrderFormCart(String userId) async {
+    return await datasource.createdOrderFormCart(userId);
+  }
+
+  @override
+  Future<bool> removeProduct(
+    int productId,
+    String userId,
+  ) async {
+    return await datasource.removeProduct(
       productId,
       userId,
     );

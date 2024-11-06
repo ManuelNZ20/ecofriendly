@@ -1,3 +1,4 @@
+import 'package:ecofriendly_flutter_app/features/cart/presentation/riverpod/cart_items.riverpod.dart';
 import 'package:ecofriendly_flutter_app/features/client/domain/entities/product_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,11 +9,12 @@ import '../../riverpod/storage/favorite_products.riverpod.dart';
 import '../../riverpod/storage/local_storage.riverpod.dart';
 
 class ProductDetailScreen extends ConsumerWidget {
-  final int productId;
+  static const String name = 'product_detail_screen';
   const ProductDetailScreen({
     super.key,
     required this.productId,
   });
+  final int productId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -153,14 +155,19 @@ class ProductDetailScreen extends ConsumerWidget {
                 IconButton(
                   icon: const Icon(Icons.eco_outlined),
                   onPressed: () {
-                    // Implementa la lógica del carrito
+                    // Implementa la lógica de feedback
                   },
                 ),
                 const SizedBox(width: 8.0),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      // TODO Implementa la lógica de agregar al carrito
+                      ref.read(cartNotifierProvider.notifier).addProductToCart(
+                            productId,
+                            product.nameProduct,
+                            1,
+                            product.price,
+                          );
                     },
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -200,16 +207,10 @@ class _SliderAppBar extends ConsumerWidget {
     final colors = Theme.of(context).colorScheme;
     return IconButton(
       onPressed: () async {
-        // final localStorageRepository = ref.read(localStorageRepositoryProvider);
-        // Cambia el estado de favorito de forma asíncrona
-        // await localStorageRepository.toggleFavorite(product);
         await ref
             .read(productsFavoriteProvider.notifier)
             .toggleFavorite(product);
-        // Invalida el `isFavoriteProvider` para que recargue el estado
         ref.invalidate(isFavoriteProvider(product.id));
-        // ref.watch(localStorageRepositoryProvider).toggleFavorite(product);
-        // ref.invalidate(isFavoriteProvider(product.id));
       },
       icon: isFavoriteFuture.when(
         loading: () => const CircularProgressIndicator(strokeWidth: 2),

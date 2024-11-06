@@ -1,29 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../riverpod/cart_items.riverpod.dart';
+import '../widgets/widgets.dart';
 
-class CartView extends StatelessWidget {
+class CartView extends ConsumerWidget {
   const CartView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cartItems = ref.watch(cartNotifierProvider);
     final size = MediaQuery.of(context).size;
+    final colors = Theme.of(context).colorScheme;
+    final title = Theme.of(context).textTheme.titleLarge!.copyWith(
+          color: colors.onPrimary,
+        );
     return Scaffold(
       appBar: AppBar(
         title: const Text('Carro de Compras'),
+        actions: [
+          IconButton(
+            onPressed: ref.read(cartNotifierProvider.notifier).clearCart,
+            icon: const Icon(Icons.delete_outline_rounded),
+          )
+        ],
       ),
       body: Stack(
         children: [
-          ListView.builder(
-            itemCount: 40,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text('Index $index'),
-                subtitle: Text('Index $index'),
-                leading: const Icon(Icons.online_prediction_rounded),
-                onTap: () {},
-                trailing: const Icon(Icons.subdirectory_arrow_left),
-              );
-            },
-          ),
+          cartItems.isEmpty
+              ? const MessageEmptyContent()
+              : ListView.builder(
+                  itemCount: cartItems.length,
+                  itemBuilder: (context, index) {
+                    final cart = cartItems[index];
+                    return CartItemProduct(
+                      cart: cart,
+                    );
+                  },
+                ),
           Positioned(
             bottom: 10,
             child: SizedBox(
@@ -31,46 +44,35 @@ class CartView extends StatelessWidget {
               height: 80,
               child: Container(
                 margin: const EdgeInsets.symmetric(
-                  horizontal: 20,
+                  horizontal: 10,
                 ),
-                width: size.width * .8,
-                decoration: const BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                width: size.width * .9,
+                decoration: BoxDecoration(
+                  color: colors.onBackground,
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(20),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      ref
+                          .read(cartNotifierProvider.notifier)
+                          .totalProductsCart()
+                          .toStringAsFixed(3),
+                      style: title,
+                    ),
+                    FilledButton(
+                      onPressed: () {},
+                      child: const Text('Confirmar Orden'),
+                    ),
+                  ],
                 ),
               ),
             ),
           )
           // const _MessageEmptyContent(),
-        ],
-      ),
-    );
-  }
-}
-
-class _MessageEmptyContent extends StatelessWidget {
-  const _MessageEmptyContent();
-
-  @override
-  Widget build(BuildContext context) {
-    final titleMessage = Theme.of(context).textTheme.titleMedium;
-
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.remove_shopping_cart_outlined,
-            size: 100,
-          ),
-          const SizedBox(height: 20),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * .6,
-            child: Text(
-              '¡Ups! Parece que tu carrito está vacío. ¿Porque no agregar algo que te guste?',
-              style: titleMessage,
-            ),
-          )
         ],
       ),
     );
