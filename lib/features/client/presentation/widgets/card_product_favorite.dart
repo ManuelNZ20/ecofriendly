@@ -104,19 +104,19 @@ class CardProductFavorite extends ConsumerWidget {
                 },
               ),
             ),
-            Positioned(
-              right: 0,
-              child: IconButton(
-                onPressed: () {
-                  ref.read(productsProvider.notifier).toggleFavorite(id);
-                },
-                icon: Icon(
-                  Icons.close_rounded,
-                  color: Theme.of(context).colorScheme.primary,
-                  size: 35,
-                ),
-              ),
-            ),
+            // Positioned(
+            //   right: 0,
+            //   child: IconButton(
+            //     onPressed: () {
+            //       ref.read(productsProvider.notifier).toggleFavorite(id);
+            //     },
+            //     icon: Icon(
+            //       Icons.close_rounded,
+            //       color: Theme.of(context).colorScheme.primary,
+            //       size: 35,
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

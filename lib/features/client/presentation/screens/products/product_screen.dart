@@ -195,24 +195,15 @@ class _SliderAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final isFavoriteFuture = ref.watch(isFavoriteProvider(product.id));
+    final isFavoriteFuture = ref.watch(isFavoriteProvider(product.id));
     final colors = Theme.of(context).colorScheme;
     return IconButton(
       onPressed: () {
         print('F');
         ref.watch(localStorageRepositoryProvider).toggleFavorite(product);
-        ref.read(productsProvider.notifier).toggleFavorite(product.id);
-        // ref.invalidate(isFavoriteProvider(product.id));
+        ref.invalidate(isFavoriteProvider(product.id));
       },
-      icon: Icon(
-        ref.watch(productsProvider.select((state) => state.products
-                .firstWhere((product) => product.id == product.id)
-                .isFavorite!))
-            ? Icons.favorite
-            : Icons.favorite_border,
-        color: colors.primary,
-      ),
-      /* isFavoriteFuture.when(
+      icon: isFavoriteFuture.when(
         loading: () => const CircularProgressIndicator(strokeWidth: 2),
         data: (isFavorite) => isFavorite
             ? Icon(
@@ -224,7 +215,7 @@ class _SliderAppBar extends ConsumerWidget {
                 color: colors.primary,
               ),
         error: (_, __) => throw UnimplementedError(),
-      ), */
+      ),
     );
   }
 }
