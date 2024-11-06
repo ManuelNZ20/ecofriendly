@@ -1,5 +1,5 @@
-import 'package:ecofriendly_flutter_app/features/cart/domain/entities/cart_items.dart';
-import 'package:ecofriendly_flutter_app/features/cart/infrastructure/models/cart_items.module.dart';
+import '../../domain/domain.dart';
+import '../infrastructure.dart';
 
 class CartItemsMapper {
   static CartItems toCartItemsEntity(CartItemsModel cart) => CartItems(

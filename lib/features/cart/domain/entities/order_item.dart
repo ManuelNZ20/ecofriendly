@@ -4,6 +4,7 @@ class OrderItem {
   final int productId;
   final int quantity;
   final double price;
+  final String createAt;
 
   OrderItem({
     required this.id,
@@ -11,6 +12,7 @@ class OrderItem {
     required this.productId,
     required this.quantity,
     required this.price,
+    required this.createAt,
   });
 
   OrderItem copyWith({
@@ -19,6 +21,7 @@ class OrderItem {
     int? productId,
     int? quantity,
     double? price,
+    String? createAt,
   }) =>
       OrderItem(
         id: id ?? this.id,
@@ -26,5 +29,6 @@ class OrderItem {
         productId: productId ?? this.productId,
         quantity: quantity ?? this.quantity,
         price: price ?? this.price,
+        createAt: createAt ?? this.createAt,
       );
 }

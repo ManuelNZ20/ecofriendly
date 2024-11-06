@@ -42,7 +42,7 @@ class CartItemProduct extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Icon(
-                Icons.shopping_bag,
+                Icons.shopping_cart_outlined,
                 color: colors.primary,
               ),
               Column(

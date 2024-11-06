@@ -1,5 +1,5 @@
 import '../../domain/entities/order.dart';
-import '../models/order.module.dart';
+import '../infrastructure.dart';
 
 class OrderMapper {
   static Order toOrderEntity(OrderModel order) => Order(

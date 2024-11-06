@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../riverpod/cart_items.riverpod.dart';
+import '../../../../core/utils/functions/show_snackbar.dart';
+import '../riverpod/providers.dart';
 import '../widgets/widgets.dart';
 
 class CartView extends ConsumerWidget {
@@ -64,7 +65,19 @@ class CartView extends ConsumerWidget {
                       style: title,
                     ),
                     FilledButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        ref.read(orderConfirmProvider).when(
+                          data: (data) {
+                            showSnackbar(context, 'Orden Confirmada');
+                          },
+                          error: (error, stackTrace) {
+                            showSnackbar(context, 'Error de Orden $error');
+                          },
+                          loading: () {
+                            showSnackbar(context, 'Procesando...');
+                          },
+                        );
+                      },
                       child: const Text('Confirmar Orden'),
                     ),
                   ],

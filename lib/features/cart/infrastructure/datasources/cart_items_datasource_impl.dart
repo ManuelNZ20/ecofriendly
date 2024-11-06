@@ -1,9 +1,7 @@
-import 'package:ecofriendly_flutter_app/features/cart/domain/entities/cart_items.dart';
-import 'package:ecofriendly_flutter_app/features/cart/infrastructure/mappers/cart_items_mapper.dart';
-import 'package:ecofriendly_flutter_app/features/cart/infrastructure/models/cart_items.module.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import '../../domain/datasouces/cart_items_datasources.dart';
+import '../../domain/domain.dart';
+import '../infrastructure.dart';
 
 class CartItemsDatasourceImpl extends CartItemsDatasource {
   final supabase = Supabase.instance.client;

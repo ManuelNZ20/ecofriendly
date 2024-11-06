@@ -1,5 +1,5 @@
-import '../../domain/entities/order_item.dart';
-import '../models/order_item.module.dart';
+import '../infrastructure.dart';
+import '../../domain/domain.dart';
 
 class OrderItemMapper {
   static OrderItem toOrderItemEntity(OrderItemModel order) => OrderItem(
@@ -8,5 +8,6 @@ class OrderItemMapper {
         productId: order.productId,
         quantity: order.quantity,
         price: order.price,
+        createAt: order.createAt,
       );
 }

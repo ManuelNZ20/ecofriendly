@@ -34,7 +34,6 @@ class ProductDetailScreen extends ConsumerWidget {
           fontSize: 18,
           fontWeight: FontWeight.bold,
         );
-    final colors = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
         leading: const IconButtonArrowBack(),
