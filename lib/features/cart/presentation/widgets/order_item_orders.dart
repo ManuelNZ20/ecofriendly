@@ -1,4 +1,7 @@
+import 'package:ecofriendly_flutter_app/features/cart/presentation/screens/screens.dart';
+import 'package:ecofriendly_flutter_app/features/cart/presentation/widgets/tag_state_order.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../domain/domain.dart';
 
@@ -14,14 +17,17 @@ class OrderItemOrders extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
     final title = Theme.of(context).textTheme.bodyLarge;
-    final labelTag = Theme.of(context).textTheme.bodySmall!.copyWith(
-          color: colors.background,
-        );
     final titleDateTime = Theme.of(context).textTheme.bodySmall!.copyWith(
           fontSize: 8,
         );
     return InkWell(
-      onTap: () {},
+      onTap: () => context.pushNamed(
+        OrderDetailScreen.name,
+        pathParameters: {
+          'page': '1',
+          'order_id': '${order.id}',
+        },
+      ),
       child: Container(
         width: size.width,
         height: 90,
@@ -76,18 +82,8 @@ class OrderItemOrders extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: order.status == 'PENDIENTE'
-                          ? Colors.amber.shade600
-                          : Colors.teal.shade400,
-                      borderRadius: const BorderRadius.all(Radius.circular(50)),
-                    ),
-                    child: Text(
-                      order.status.toUpperCase(),
-                      style: labelTag,
-                    ),
+                  TagStateOrder(
+                    stateOrder: order.status,
                   ),
                 ],
               ),
