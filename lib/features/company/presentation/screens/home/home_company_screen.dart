@@ -17,6 +17,7 @@ class HomeCompanyScreen extends ConsumerWidget {
     final tabIndex = ref.watch(tabProvider);
     final isDark = ref.watch(appThemeStateProvider);
     final listColors = ref.watch(listColorsProvider);
+    final indexColors = ref.watch(indexColorsStateProvider);
     final colors = Theme.of(context).colorScheme;
     return DefaultTabController(
       animationDuration: const Duration(milliseconds: 300),
@@ -26,16 +27,20 @@ class HomeCompanyScreen extends ConsumerWidget {
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.eco_outlined),
-            onPressed: () => ref.read(indexColorsProvider.notifier).update(
-                (state) => (state >= listColors.length - 1) ? 0 : state + 1),
+            onPressed: () {
+              final newIndex =
+                  (indexColors >= listColors.length - 1) ? 0 : indexColors + 1;
+              ref
+                  .read(indexColorsStateProvider.notifier)
+                  .updateColorIndex(newIndex);
+            },
             color: colors.primary,
           ),
           title: const Text('Ecofriendly'),
           actions: [
             IconButton(
-              onPressed: () => ref.read(appThemeProvider.notifier).update(
-                    (state) => !state,
-                  ),
+              onPressed: () =>
+                  ref.read(appThemeStateProvider.notifier).toggleTheme(),
               icon: Icon(!isDark ? Icons.light_mode : Icons.dark_mode),
               color: !isDark
                   ? MyColors.themeColors.lightMode

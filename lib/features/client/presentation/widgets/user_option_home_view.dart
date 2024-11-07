@@ -10,8 +10,10 @@ class UserOptionHomeView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = Theme.of(context).colorScheme;
-    final isDark = ref.watch(appThemeStateProvider);
+    // final isDark = ref.watch(appThemeProvider);
     final listColors = ref.watch(listColorsProvider);
+    final indexColors = ref.watch(indexColorsStateProvider);
+    final isDark = ref.watch(appThemeStateProvider);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -21,14 +23,18 @@ class UserOptionHomeView extends ConsumerWidget {
         ),
         IconButton(
           icon: const Icon(Icons.eco_outlined),
-          onPressed: () => ref.read(indexColorsProvider.notifier).update(
-              (state) => (state >= listColors.length - 1) ? 0 : state + 1),
+          onPressed: () {
+            final newIndex =
+                (indexColors >= listColors.length - 1) ? 0 : indexColors + 1;
+            ref
+                .read(indexColorsStateProvider.notifier)
+                .updateColorIndex(newIndex);
+          },
           color: colors.primary,
         ),
         IconButton(
-          onPressed: () => ref.read(appThemeProvider.notifier).update(
-                (state) => !state,
-              ),
+          onPressed: () =>
+              ref.read(appThemeStateProvider.notifier).toggleTheme(),
           icon: Icon(!isDark ? Icons.light_mode : Icons.dark_mode),
           color: !isDark
               ? MyColors.themeColors.lightMode

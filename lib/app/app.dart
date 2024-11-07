@@ -12,7 +12,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final appRouter = ref.watch(appRouterProvider);
     final isDark = ref.watch(appThemeStateProvider);
-    final index = ref.watch(indexColorsProvider);
+    final index = ref.watch(indexColorsStateProvider);
     final listColors = ref.watch(listColorsProvider);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
