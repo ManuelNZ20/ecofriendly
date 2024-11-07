@@ -1,5 +1,7 @@
+import 'package:ecofriendly_flutter_app/features/client/presentation/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../config/theme/theme.dart';
 import '../../../auth/presentation/riverpod/providers.dart';
@@ -18,7 +20,12 @@ class UserOptionHomeView extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         TextButton(
-          onPressed: () {},
+          onPressed: () => context.pushNamed(
+            ProfileScreen.name,
+            pathParameters: {
+              'page': '0',
+            },
+          ),
           child: const Text('Ecofriendly'),
         ),
         IconButton(

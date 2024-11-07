@@ -133,7 +133,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 orderId: int.parse(orderId!),
               );
             },
-          )
+          ),
+          GoRoute(
+            path: 'profile',
+            name: ProfileScreen.name,
+            builder: (context, state) {
+              return const ProfileScreen();
+            },
+          ),
         ],
       ),
       // HOME - COMPANY
