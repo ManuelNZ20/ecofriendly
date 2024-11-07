@@ -11,7 +11,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appRouter = ref.watch(appRouterProvider);
-    final isDark = ref.watch(appThemeProvider);
+    final isDark = ref.watch(appThemeStateProvider);
     final index = ref.watch(indexColorsProvider);
     final listColors = ref.watch(listColorsProvider);
     return MaterialApp.router(

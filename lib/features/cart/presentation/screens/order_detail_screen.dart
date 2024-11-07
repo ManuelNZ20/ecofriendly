@@ -1,3 +1,4 @@
+import 'package:ecofriendly_flutter_app/core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/shared/shared.dart';
@@ -24,6 +25,7 @@ class OrderDetailScreen extends ConsumerWidget {
     final size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
     final title = Theme.of(context).textTheme.titleLarge;
+
     return Scaffold(
       appBar: AppBar(
         leading: const IconButtonArrowBack(),
@@ -87,7 +89,8 @@ class OrderDetailScreen extends ConsumerWidget {
                     SizedBox(
                       width: size.width,
                       child: FilledButton.icon(
-                        onPressed: () {},
+                        onPressed: () =>
+                            showConfirmationDialog(context, ref, orderId),
                         icon: const Icon(Icons.payment_rounded),
                         label: Text(
                           'REALIZAR PAGO',

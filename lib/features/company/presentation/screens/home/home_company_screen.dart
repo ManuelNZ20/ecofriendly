@@ -15,7 +15,7 @@ class HomeCompanyScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tabIndex = ref.watch(tabProvider);
-    final isDark = ref.watch(appThemeProvider);
+    final isDark = ref.watch(appThemeStateProvider);
     final listColors = ref.watch(listColorsProvider);
     final colors = Theme.of(context).colorScheme;
     return DefaultTabController(

@@ -10,7 +10,7 @@ class UserOptionHomeView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = Theme.of(context).colorScheme;
-    final isDark = ref.watch(appThemeProvider);
+    final isDark = ref.watch(appThemeStateProvider);
     final listColors = ref.watch(listColorsProvider);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
