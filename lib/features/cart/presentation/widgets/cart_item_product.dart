@@ -32,75 +32,81 @@ class CartItemProduct extends ConsumerWidget {
       ),
       child: SizedBox(
         width: size.width,
-        height: 120,
+        height: 130,
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 8,
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: Column(
             children: [
-              Icon(
-                Icons.shopping_cart_outlined,
-                color: colors.primary,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 150,
-                    child: Text(
-                      cart.nameProduct,
-                      textAlign: TextAlign.justify,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                    ),
-                  ),
-                  Text('Precio ${cart.price}'),
-                ],
-              ),
-              CircleAvatar(
-                radius: 15,
-                backgroundColor: colors.primary,
-                child: Text('${cart.quantity}', style: title),
-              ),
               Row(
-                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Icon(
+                    Icons.shopping_cart_outlined,
+                    color: colors.primary,
+                  ),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      IconButton.outlined(
-                        onPressed: () => ref
-                            .read(cartNotifierProvider.notifier)
-                            .incrementProductQuantity(cart.productId),
-                        icon: const Icon(
-                          Icons.plus_one,
+                      SizedBox(
+                        width: 150,
+                        child: Text(
+                          cart.nameProduct,
+                          textAlign: TextAlign.justify,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
                         ),
                       ),
-                      IconButton.outlined(
+                      Text('Precio ${cart.price}'),
+                    ],
+                  ),
+                  CircleAvatar(
+                    radius: 15,
+                    backgroundColor: colors.primary,
+                    child: Text('${cart.quantity}', style: title),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton.outlined(
+                            onPressed: () => ref
+                                .read(cartNotifierProvider.notifier)
+                                .incrementProductQuantity(cart.productId),
+                            icon: const Icon(
+                              Icons.plus_one,
+                            ),
+                          ),
+                          IconButton.outlined(
+                            onPressed: () => ref
+                                .read(cartNotifierProvider.notifier)
+                                .decrementProductQuantity(cart.productId),
+                            icon: const Icon(
+                              Icons.exposure_minus_1,
+                            ),
+                          ),
+                        ],
+                      ),
+                      IconButton(
                         onPressed: () => ref
                             .read(cartNotifierProvider.notifier)
-                            .decrementProductQuantity(cart.productId),
-                        icon: const Icon(
-                          Icons.exposure_minus_1,
+                            .removeProduct(cart.productId, cart.userId),
+                        icon: Icon(
+                          Icons.delete_outline_rounded,
+                          color: colors.secondary,
                         ),
                       ),
                     ],
                   ),
-                  IconButton(
-                    onPressed: () => ref
-                        .read(cartNotifierProvider.notifier)
-                        .removeProduct(cart.productId, cart.userId),
-                    icon: Icon(
-                      Icons.delete_outline_rounded,
-                      color: colors.secondary,
-                    ),
-                  ),
                 ],
               ),
+              const Spacer(),
+              const Divider(),
             ],
           ),
         ),

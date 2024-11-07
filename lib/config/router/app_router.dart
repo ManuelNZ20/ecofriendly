@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/shared/infrastructure/infrastructure.dart';
 import '../../features/auth/presentation/screens/screens.dart';
+import '../../features/cart/presentation/screens/screens.dart';
 import '../../features/company/presentation/screens/screens.dart';
 import '../../features/client/presentation/screens/screens.dart';
 import '../../features/onboarding/presentation/screens.dart';
@@ -123,6 +124,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               ),
             ],
           ),
+          GoRoute(
+            path: 'order_detail/:order_id',
+            name: OrderDetailScreen.name,
+            builder: (context, state) {
+              final orderId = state.pathParameters['order_id'];
+              return OrderDetailScreen(
+                orderId: int.parse(orderId!),
+              );
+            },
+          )
         ],
       ),
       // HOME - COMPANY

@@ -14,10 +14,10 @@ class OrderModel {
   });
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
-        id: json['id'] ?? 0,
+        id: json['id_orders'] ?? 0,
         userId: json['user_id'] ?? '',
-        totalPrice: json['total_price'] ?? 0.0,
+        totalPrice: (json['total_price'] as num?)?.toDouble() ?? 0.0,
         status: json['status'] ?? '',
-        createAt: json['create_at'],
+        createAt: DateTime.parse(json['created_at']),
       );
 }

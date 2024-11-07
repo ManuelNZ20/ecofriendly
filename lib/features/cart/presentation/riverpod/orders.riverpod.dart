@@ -16,38 +16,43 @@ final ordersNotifierProvider =
 // Definición de `orderConfirmProvider`
 final orderConfirmProvider = FutureProvider.autoDispose<bool>((ref) async {
   final cartsItems = ref.read(cartNotifierProvider);
-  final totalPrice = cartsItems.fold<double>(
-    0.0,
-    (sum, element) => sum + element.price * element.quantity,
-  );
+  if (cartsItems.isNotEmpty) {
+    final totalPrice = cartsItems.fold<double>(
+      0.0,
+      (sum, element) => sum + element.price * element.quantity,
+    );
 
-  final ordersItems = cartsItems
-      .map(
-        (e) => OrderItem(
-          id: 0,
-          orderId: 0,
-          productId: e.productId,
-          quantity: e.quantity,
-          price: e.price,
-          createAt: '',
-        ),
-      )
-      .toList();
+    final ordersItems = cartsItems
+        .map(
+          (e) => OrderItem(
+            id: 0,
+            orderId: 0,
+            productId: e.productId,
+            quantity: e.quantity,
+            price: e.price,
+            createAt: '',
+          ),
+        )
+        .toList();
 
-  await ref.read(ordersNotifierProvider.notifier).createOrder(
-        ordersItems,
-        totalPrice,
-      );
+    await ref.read(ordersNotifierProvider.notifier).createOrder(
+          ordersItems,
+          totalPrice,
+        );
 
-  ref.read(cartNotifierProvider.notifier).clearCart();
-  return true;
+    ref.read(cartNotifierProvider.notifier).clearCart();
+    return true;
+  }
+  return false;
 });
 
 class OrdersNotifier extends StateNotifier<List<Order>> {
   OrdersNotifier(
     this._orderRepository, {
     required this.keyValueStorageService,
-  }) : super([]);
+  }) : super([]) {
+    loadFetchOrders();
+  }
   final KeyValueStorageService keyValueStorageService;
   final OrderRepository _orderRepository;
   Future<void> loadFetchOrders() async {

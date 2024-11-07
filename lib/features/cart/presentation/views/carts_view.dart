@@ -33,11 +33,18 @@ class CartView extends ConsumerWidget {
     });
     return Scaffold(
       appBar: AppBar(
+        leading: Icon(
+          Icons.shopping_cart_outlined,
+          color: colors.primary,
+        ),
         title: const Text('Carro de Compras'),
         actions: [
           IconButton(
             onPressed: ref.read(cartNotifierProvider.notifier).clearCart,
-            icon: const Icon(Icons.delete_outline_rounded),
+            icon: Icon(
+              Icons.delete_outline_rounded,
+              color: colors.error,
+            ),
           )
         ],
       ),
