@@ -42,4 +42,12 @@ class Environment {
   static String get uploadPresetCategory =>
       dotenv.env['UPLOAD_PRESET_CATEGORY'] ??
       'Not UPLOAD_PRESET_PRODUCT especified';
+
+  // STRIPE
+  static String get stripePublishableKey =>
+      dotenv.env['STRIPE_PUBLISHABLE_KEY'] ??
+      'Not STRIPE_PUBLISHABLE_KEY especified';
+
+  static String get stripeSecretKey =>
+      dotenv.env['STRIPE_SECRET_KEY'] ?? 'Not STRIPE_SECRET_KEY specified';
 }

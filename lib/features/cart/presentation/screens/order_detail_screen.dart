@@ -1,7 +1,7 @@
-import 'package:ecofriendly_flutter_app/core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/shared/shared.dart';
+import '../riverpod/stripe.riverpod.dart';
 import '../riverpod/providers.dart';
 import '../widgets/widgets.dart';
 
@@ -40,7 +40,7 @@ class OrderDetailScreen extends ConsumerWidget {
             top: 0,
             child: SizedBox(
               width: size.width,
-              height: size.height * .68,
+              height: size.height * .6,
               child: ListView.builder(
                 itemCount: ordersItems.length,
                 itemBuilder: (context, index) {
@@ -56,7 +56,7 @@ class OrderDetailScreen extends ConsumerWidget {
             bottom: 0,
             child: SizedBox(
               width: size.width,
-              height: size.height * .2,
+              height: size.height * .3,
               child: Container(
                 width: size.width,
                 padding: const EdgeInsets.symmetric(
@@ -70,27 +70,56 @@ class OrderDetailScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Divider(),
+                    Text(
+                      'TOTAL A PAGAR',
+                      style: title!.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'TOTAL',
+                          'SOLES',
                           style: title,
                         ),
                         Text(
-                          orders.totalPrice.toStringAsFixed(3),
-                          style: title!.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                          'S/. ${orders.totalPrice.toStringAsFixed(3)}',
+                          style: title,
                         ),
                       ],
                     ),
                     const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "DOLARES",
+                          style: title,
+                        ),
+                        Text(
+                          "\$ ${(orders.totalPrice / 3.77).toStringAsFixed(3)}",
+                          style: title,
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
                     SizedBox(
                       width: size.width,
                       child: FilledButton.icon(
-                        onPressed: () =>
-                            showConfirmationDialog(context, ref, orderId),
+                        onPressed: () async {
+                          try {
+                            await ref
+                                .read(stripeServiceProvider.notifier)
+                                .makePayment(orders.totalPrice ~/ 3.77, 'usd');
+                            ref
+                                .read(ordersNotifierProvider.notifier)
+                                .updateOrderStatus(orderId, 'CONFIRMADO');
+                          } catch (e) {
+                            print('Error $e');
+                          }
+                        },
                         icon: const Icon(Icons.payment_rounded),
                         label: Text(
                           'REALIZAR PAGO',
@@ -102,6 +131,7 @@ class OrderDetailScreen extends ConsumerWidget {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 14),
                   ],
                 ),
               ),

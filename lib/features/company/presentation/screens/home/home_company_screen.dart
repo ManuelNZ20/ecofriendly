@@ -5,8 +5,7 @@ import '../../../../../config/theme/theme.dart';
 import '../../../../auth/presentation/riverpod/providers.dart';
 import '../../riverpod/company_provider.riverpod.dart';
 import '../../riverpod/tab_controller_provider.riverpod.dart';
-import '../../views/banner/banner_view.dart';
-import '../../views/products/products_view.dart';
+import '../../views/views.dart';
 import '../screens.dart';
 
 class HomeCompanyScreen extends ConsumerWidget {
@@ -170,7 +169,7 @@ class _ContainerTabs extends ConsumerWidget {
               children: [
                 ProductsView(),
                 BannersView(),
-                Icon(Icons.message),
+                OrderCompanyView(),
               ],
             ),
           ),
